@@ -1,0 +1,83 @@
+#!/bin/sh
+##
+## Copyright 2017 Fabon Dzogang
+##
+## This file is part of vanilla-cspectra.
+## vanilla-cspectra is free software: you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation, either version 3 of the License, or
+## any later version.
+## vanilla-cspectra is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+## You should have received a copy of the GNU General Public License
+## along with vanilla-cspectra.  If not, see <http://www.gnu.org/licenses/>.
+##
+
+PTHREADS=""
+
+rm -rf Makefile.rules
+case `uname -s` in
+ NetBSD)
+  echo 'CC = /usr/bin/gcc' >> Makefile.rules
+  echo 'CFLAGS =  ' >> Makefile.rules
+;;
+ SunOS)
+  echo 'CC=/usr/local/bin/gcc' >> Makefile.rules
+  echo 'CFLAGS =' >> Makefile.rules
+;;
+ Linux)
+  echo 'CC=gcc' >> Makefile.rules
+  echo 'CFLAGS =' >> Makefile.rules
+  PTHREADS="-lpthread"
+;;
+  Darwin)
+  echo 'CC=/usr/bin/gcc' >> Makefile.rules
+  echo 'CFLAGS =' >> Makefile.rules
+;;
+  OSF1)
+  echo 'CC=/bin/cc' >> Makefile.rules
+  echo 'CFLAGS =' >> Makefile.rules
+;;
+  Darwin)
+  echo 'CC=/usr/bin/gcc' >> Makefile.rules
+  echo 'CFLAGS = ' >> Makefile.rules
+;;
+  HP-UX)
+  echo 'CC=/usr/local/bin/gcc' >> Makefile.rules
+  echo 'CFLAGS = ' >> Makefile.rules
+;;
+  CYGWIN_NT-5.1)
+  echo 'CC=gcc' >> Makefile.rules
+  echo 'CFLAGS =' >> Makefile.rules
+esac
+
+#
+# binary
+#
+
+echo "OUT=vanilla_cspectra_beta" >> Makefile.rules
+
+#
+# libs
+#
+
+echo "LIBS= -lfftw3 -lm $PTHREADS" >> Makefile.rules
+#echo "LIBS= -lfftw3 -lm -lgsl -lcblas" >> Makefile.rules
+
+echo "PWD=`pwd`" >> Makefile.rules
+echo "INCLUDES=`pwd`/include/" >> Makefile.rules
+echo "LIBS_PATH=`pwd`/lib/" >> Makefile.rules
+
+#
+# misc
+#
+
+echo "ARCHI=`uname -s`" >> Makefile.rules
+echo "CLEAN=rm -rf *.*~ *~ *.o *\#*" >> Makefile.rules
+
+chmod 604 Makefile.rules
+
+
+
